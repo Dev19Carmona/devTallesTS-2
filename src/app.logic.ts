@@ -1,19 +1,25 @@
 import fs from 'fs'
+import { yarg } from './config/plugins/args.plugin'
+
+const { b: base, l: limit, s: show } = yarg
 
 let outputMessage = ''
-const base = 5
+// const base = 5
 const headerMessage = `
 ==================================================
 TABLA DEL ${base}
 ==================================================
 
 `
-for (let i = 0; i <= 10; i++) {
+
+for (let i = 0; i <= limit; i++) {
   outputMessage += `${base} x ${i} = ${base * i} \n`
 }
 
 outputMessage = headerMessage + outputMessage
-console.log(outputMessage)
+if (show) {
+  console.log(outputMessage)
+}
 
 const outputPath = `outputs`
 fs.mkdirSync(outputPath, { recursive: true })
