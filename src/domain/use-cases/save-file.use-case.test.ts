@@ -20,4 +20,15 @@ describe('save-file.use-case', () => {
     expect(fileExist).toBe(true)
     expect(fileContent).toBe(options.fileContent)
   })
+
+  test('should save file with custom values', () => {
+    const options = {
+      fileContent: "custom content",
+      fileDestination: "custom-outputs",
+      fileName: "custom-table-name"
+    }
+    const saveFile = new SaveFile()
+    const result = saveFile.execute(options)
+    
+  })
 })
