@@ -1,8 +1,18 @@
 import { SaveFile } from './save-file.use-case'
 import fs from 'fs'
 describe('save-file.use-case', () => {
+  const customOptions = {
+    fileContent: "custom content",
+    fileDestination: "custom-outputs",
+    fileName: "custom-table-name"
+  }
+  const customFilePath = `${customOptions.fileDestination}/${customOptions.fileName}.txt`
+
   afterEach(() => {
-    fs.rmSync('outputs', { recursive: true })
+    const outputFolderExist = fs.existsSync('outputs')
+    const customOutputFolderExist = fs.existsSync(customOptions.fileDestination)
+    if (outputFolderExist)fs.rmSync('outputs', { recursive: true })
+    if (customOutputFolderExist)fs.rmSync(customOptions.fileDestination, { recursive: true })
   })
   test('should save file with default values', () => {
     const filePath = 'outputs/table.txt'
@@ -22,13 +32,15 @@ describe('save-file.use-case', () => {
   })
 
   test('should save file with custom values', () => {
-    const options = {
-      fileContent: "custom content",
-      fileDestination: "custom-outputs",
-      fileName: "custom-table-name"
-    }
     const saveFile = new SaveFile()
-    const result = saveFile.execute(options)
     
+    const result = saveFile.execute(customOptions)
+    const fileExist = fs.existsSync(customFilePath)
+    const fileContent = fs.readFileSync(customFilePath, {
+      encoding: 'utf-8',
+    })
+    expect(result).toBe(true)
+    expect(fileExist).toBe(true)
+    expect(fileContent).toBe(customOptions.fileContent)
   })
 })
