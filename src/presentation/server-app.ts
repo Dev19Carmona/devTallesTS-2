@@ -18,6 +18,6 @@ export class ServerApp {
       fileName: name
     })
     if (show) console.log(table)
-    wasCreated ? console.log('File Created') : console.log('Erro created')
+    wasCreated ? console.log('File Created') : console.error('Error created')
   }
 }
